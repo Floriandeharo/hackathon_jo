@@ -15,6 +15,14 @@ const athletes = [
       games_participations: 2,
       first_game: "2012 London",
       athlete_year_birth: 1988
+    },
+    {
+      id: 3,
+      athlete_url: "https://example.com/athlete3",
+      athlete_full_name: "Cooper WOODS-TOPALOVIC",
+      games_participations: 1,
+      first_game: "2016 Rio",
+      athlete_year_birth: 1992
     }
   ];
   

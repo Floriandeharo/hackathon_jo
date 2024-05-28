@@ -1,12 +1,22 @@
+const cors = require('cors'); // Importer le middleware cors
 const express = require('express');
 const app = express();
 const routes = require('./routes');
 
+const corsOptions = {
+  origin: "*",
+};
+
+app.use(cors(corsOptions));
 // Middleware pour analyser le JSON
 app.use(express.json());
 
 // Utiliser les routes
 app.use('/api', routes);
+
+// app.use(cors());
+
+
 
 // Middleware de gestion des erreurs pour les routes non trouvées
 app.use((req, res, next) => {
