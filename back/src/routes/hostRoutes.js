@@ -1,12 +1,9 @@
+// hostsRoutes.js
 const express = require('express');
 const router = express.Router();
-const hostController = require('../controllers/hostController');
+const hostsController = require('../controllers/hostsController');
 
-// Routes pour les hôtes
-router.get('/', hostController.getAllHosts);
-router.get('/:id', hostController.getHostById);
-router.post('/', hostController.createHost);
-router.put('/:id', hostController.updateHost);
-router.delete('/:id', hostController.deleteHost);
+router.get('/', hostsController.getAllHosts);
+router.get('/:id', hostsController.getHostById);
 
 module.exports = router;

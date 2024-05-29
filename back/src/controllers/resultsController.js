@@ -1,73 +1,57 @@
-// Exemples de données (vous pouvez remplacer ceci par une base de données)
-const results = [
-    {
-      id: 1,
-      discipline_title: "Freestyle Skiing",
-      event_title: "Men's Moguls",
-      slug_game: "beijing-2022",
-      participant_type: "Athlete",
-      medal_type: "",
-      athletes: [
-        {
-          athlete_url: "https://olympics.com/en/athletes/cooper-woods-topalovic",
-          athlete_full_name: "Cooper WOODS-TOPALOVIC",
-        }
-      ],
-      rank_equal: false,
-      rank_position: 6,
-      country_name: "Australia",
-      country_code: "AU",
-      country_3_letter_code: "AUS",
-      value_unit: "76.74",
-      value_type: "POINTS"
+const path = require('path');
+const db = require(path.join(__dirname, '../../db'));
+
+exports.getAllResults = async (req, res) => {
+    try {
+        const Results = await db.query('SELECT * FROM olympic_results');
+        res.json(Results);
+    } catch (error) {
+        console.error('Error fetching results:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
     }
-  ];
-  
-  // Fonction pour obtenir tous les résultats
-  exports.getAllResults = (req, res) => {
-    res.json(results);
-  };
-  
-  // Fonction pour obtenir un résultat par ID
-  exports.getResultById = (req, res) => {
-    const resultId = parseInt(req.params.id, 10);
-    const result = results.find(r => r.id === resultId);
-    if (result) {
-      res.json(result);
-    } else {
-      res.status(404).json({ message: `Result with ID ${resultId} not found` });
+};
+
+exports.getResultById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const medal = await db.query('SELECT * FROM olympic_results WHERE id = ?', [id]);
+        res.json(medal);
+    } catch (error) {
+        console.error('Error fetching medal:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
     }
-  };
-  
-  // Fonction pour créer un nouveau résultat
-  exports.createResult = (req, res) => {
-    const newResult = req.body;
-    newResult.id = results.length + 1; // Assignation d'un nouvel ID
-    results.push(newResult);
-    res.status(201).json(newResult);
-  };
-  
-  // Fonction pour mettre à jour un résultat
-  exports.updateResult = (req, res) => {
-    const resultId = parseInt(req.params.id, 10);
-    const index = results.findIndex(r => r.id === resultId);
-    if (index !== -1) {
-      results[index] = { ...results[index], ...req.body };
-      res.json(results[index]);
-    } else {
-      res.status(404).json({ message: `Result with ID ${resultId} not found` });
-    }
-  };
-  
-  // Fonction pour supprimer un résultat
-  exports.deleteResult = (req, res) => {
-    const resultId = parseInt(req.params.id, 10);
-    const index = results.findIndex(r => r.id === resultId);
-    if (index !== -1) {
-      const deletedResult = results.splice(index, 1);
-      res.json(deletedResult[0]);
-    } else {
-      res.status(404).json({ message: `Result with ID ${resultId} not found` });
-    }
-  };
-  
+};
+
+// exports.createResult = async (req, res) => {
+//     try {
+//         const { name, country, medal } = req.body;
+//         const result = await db.query('INSERT INTO olympic_results (name, country, medal) VALUES (?, ?, ?)', [name, country, medal]);
+//         res.json(result);
+//     } catch (error) {
+//         console.error('Error creating medal:', error);
+//         res.status(500).json({ message: 'Internal Server Error' });
+//     }
+// };
+
+// exports.updateResult = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const { name, country, medal } = req.body;
+//         const result = await db.query('UPDATE olympic_results SET name = ?, country = ?, medal = ? WHERE id = ?', [name, country, medal, id]);
+//         res.json(result);
+//     } catch (error) {
+//         console.error('Error updating medal:', error);
+//         res.status(500).json({ message: 'Internal Server Error' });
+//     }
+// };
+
+// exports.deleteResult = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const result = await db.query('DELETE FROM olympic_results WHERE id = ?', [id]);
+//         res.json(result);
+//     } catch (error) {
+//         console.error('Error deleting medal:', error);
+//         res.status(500).json({ message: 'Internal Server Error' });
+//     }
+// };
