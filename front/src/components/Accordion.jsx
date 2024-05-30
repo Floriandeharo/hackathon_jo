@@ -29,67 +29,133 @@ ChartJS.register(
 export default function Accordion() {
   const [chartsData, setChartsData] = useState([]);
   useEffect(() => {
-    const fetchData = async (url) => { 
-      return await api.get(url)
-    }
+    const fetchData = async (url) => {
+      return await api.get(url);
+    };
 
     const apiConfig = {
-      'GoldCountry': {
-        columns: ['country_name', 'gold_medals'],
-        label: '🏅 Nombre de médailles d\'or par pays'
+      GoldCountry: {
+        columns: ["country_name", "gold_medals"],
+        label: "🏅 Nombre de médailles d'or par pays",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "rgba(75, 192, 192, 1)",
       },
-      'TotalCountry': {
-        columns: ['country_name', 'total_medals'],
-        label: '🏆 Nombre total de médailles par pays'
+      TotalCountry: {
+        columns: ["country_name", "total_medals"],
+        label: "🏆 Nombre total de médailles par pays",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "rgba(75, 192, 192, 1)",
       },
-      'ByDiscipline': {
-        columns: ['discipline_title', 'total_medals'],
-        label: '🥇 Nombre de médailles par discipline'
+      ByDiscipline: {
+        columns: ["discipline_title", "total_medals"],
+        label: "🥇 Nombre de médailles par discipline",
+        backgroundColor: "rgba(153, 102, 255, 0.2)",
+        borderColor: "rgba(153, 102, 255, 1)",
       },
-      'ByAthlete': {
-        columns: ['athlete_full_name', 'total_medals'],
-        label: '🏅 Nombre de médailles par athlète'
+      ByAthlete: {
+        columns: ["athlete_full_name", "total_medals"],
+        label: "🏅 Nombre de médailles par athlète",
+        backgroundColor: "rgba(255, 159, 64, 0.2)",
+        borderColor: "rgba(255, 159, 64, 1)",
       },
-      'ByYear': {
-        columns: ['game_year', 'total_medals'],
-        label: '📈 Évolution du nombre de médailles au fil des années'
+      ByYear: {
+        columns: ["game_year", "total_medals"],
+        label: "📈 Évolution du nombre de médailles au fil des années",
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        borderColor: "rgba(54, 162, 235, 1)",
       },
-      'BySeasonAndType': {
-        columns: ['medal_type', 'total_medals'],
-        label: '🌞❄️ Répartition des médailles par saison (été/hiver)'
+      BySeasonAndType: {
+        columns: ["medal_type", "total_medals"],
+        label: "🌞❄️ Répartition des médailles par saison (été/hiver)",
+        backgroundColor: [
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+          "rgba(255, 99, 132, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 206, 86, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+          "rgba(255, 99, 132, 1)",
+        ],
       },
-      'ByParticipantAndType': {
-        columns: ['medal_type', 'total_medals'],
-        label: '♀️♂️ Distribution des médailles par genre'
+      ByParticipantAndType: {
+        columns: ["medal_type", "total_medals"],
+        label: "♀️♂️ Distribution des médailles par genre",
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+          "rgba(255, 206, 86, 1)",
+        ],
       },
-      'ByGender': {
-        columns: ['medal_type', 'total_medals'],
-        label: '👤👥 Nombre de médailles par type d\'événement (individuel/équipe)'
+      ByGender: {
+        columns: ["medal_type", "total_medals"],
+        label:
+          "👤👥 Nombre de médailles par type d'événement (individuel/équipe)",
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+            "rgba(255, 206, 86, 0.2)"
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+            "rgba(255, 206, 86, 1)"
+          ],
       },
-    }
+    };
 
     const loadAllData = async () => {
       const results = await Promise.all(
-        Object.keys(apiConfig).map(url => fetchData('medals/medals/' + url + '?limit=20').then(data => ({url, data})))
+        Object.keys(apiConfig).map((url) =>
+          fetchData("medals/medals/" + url + "?limit=20").then((data) => ({
+            url,
+            data,
+          }))
+        )
       );
       const transformedData = results.map(({ url, data }) => {
-        const { columns, label } = apiConfig[url];
+        const { columns, label, backgroundColor, borderColor } = apiConfig[url];
         return {
-          labels: data.medals.map(element => element[columns[0]]),
-          datasets: [{
-            label: label,
-            data: data.medals.map(element => element[columns[1]]),
-            backgroundColor: 'rgba(255, 206, 86, 0.2)',
-            borderColor: 'rgba(255, 206, 86, 1)',
-            borderWidth: 1
-          }]
+          labels: data.medals.map((element) => element[columns[0]]),
+          datasets: [
+            {
+              label: label,
+              data: data.medals.map((element) => element[columns[1]]),
+              backgroundColor: backgroundColor,
+              borderColor: borderColor,
+              borderWidth: 1,
+            },
+          ],
         };
       });
-      setChartsData(transformedData)
-    }
-    loadAllData()
-  }, [])
-  
+      setChartsData(transformedData);
+    };
+    loadAllData();
+  }, []);
+
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
