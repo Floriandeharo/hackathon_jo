@@ -4,5 +4,10 @@ const medalController = require('../controllers/medalController'); // Change the
 
 router.get('/', medalController.getAllMedals);
 router.get('/:id', medalController.getMedalById);
-
+router.get('/medals/GoldCountry',medalController.GoldMedalByCountry);
+router.get('/medals/TotalCountry',medalController.MedalByCountry);
+router.get('/medals/ByDiscipline', medalController.MedalByDiscipline);
+router.get('/medals/ByAthlete', medalController.MedalByAthlete);
+router.get('/medals/ByYear', medalController.getMedalsByYear);
+// router.get('/medals/ByGenderAndType', medalController.getMedalsByGenderAndType);
 module.exports = router;

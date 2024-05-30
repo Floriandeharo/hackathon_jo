@@ -36,6 +36,7 @@ exports.getAllMedals = async (req, res) => {
       res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
 exports.getMedalById = async (req, res) => {
   try {
     const medalId = req.params.id;
@@ -46,6 +47,260 @@ exports.getMedalById = async (req, res) => {
     res.json(medal[0]);
   } catch (error) {
     console.error('Error fetching medal:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+exports.GoldMedalByCountry = async (req, res) => {
+  try {
+    let { page = 1, limit = 10 } = req.query; // Définir des valeurs par défaut
+    page = parseInt(page, 10);
+    limit = parseInt(limit, 10);
+
+    if (isNaN(page) || page <= 0) {
+        page = 1;
+    }
+
+    if (isNaN(limit) || limit <= 0) {
+        limit = 10;
+    }
+
+    const startIndex = (page - 1) * limit;
+    const [medals] = await db.query(`
+      SELECT country_name, country_code, country_3_letter_code, COUNT(*) AS gold_medals
+      FROM olympic_medals
+      WHERE medal_type = 'GOLD'
+      GROUP BY country_name, country_code, country_3_letter_code
+      ORDER BY gold_medals DESC
+      LIMIT ?, ?
+    `, [startIndex, limit]);
+
+    const [[{ total }]] = await db.query(`
+      SELECT COUNT(*) AS total
+      FROM olympic_medals
+      WHERE medal_type = 'GOLD'
+      GROUP BY country_name, country_code, country_3_letter_code
+    `);
+    const totalPages = Math.ceil(total / limit);
+
+    const results = {
+      medals,
+      currentPage: page,
+      totalPages
+    };
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error fetching medals:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
+
+exports.MedalByCountry = async (req, res) => {
+  try {
+    let { page = 1, limit = 10 } = req.query; // Définir des valeurs par défaut
+    page = parseInt(page, 10);
+    limit = parseInt(limit, 10);
+
+    if (isNaN(page) || page <= 0) {
+        page = 1;
+    }
+
+    if (isNaN(limit) || limit <= 0) {
+        limit = 10;
+    }
+
+    const startIndex = (page - 1) * limit;
+    const [medals] = await db.query(`
+    SELECT country_name, COUNT(*) AS total_medals FROM olympic_medals GROUP BY country_name ORDER BY total_medals DESC LIMIT ?, ?`, [startIndex, limit]);
+
+    const [[{ total }]] = await db.query(`
+      SELECT COUNT(*) AS total
+      FROM olympic_medals
+      GROUP BY country_name, country_code, country_3_letter_code
+    `);
+    const totalPages = Math.ceil(total / limit);
+
+    const results = {
+      medals,
+      currentPage: page,
+      totalPages
+    };
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error fetching medals:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
+
+exports.MedalByDiscipline = async (req, res) => {
+  try {
+    let { page = 1, limit = 10 } = req.query; // Définir des valeurs par défaut
+    page = parseInt(page, 10);
+    limit = parseInt(limit, 10);
+
+    if (isNaN(page) || page <= 0) {
+        page = 1;
+    }
+
+    if (isNaN(limit) || limit <= 0) {
+        limit = 10;
+    }
+
+    const startIndex = (page - 1) * limit;
+    const [medals] = await db.query(`
+    SELECT discipline_title, COUNT(*) AS total_medals FROM olympic_medals GROUP BY discipline_title ORDER BY total_medals DESC LIMIT ?, ?`, [startIndex, limit]);
+
+    const [[{ total }]] = await db.query(`
+      SELECT COUNT(*) AS total
+      FROM olympic_medals
+      GROUP BY discipline_title
+    `);
+    const totalPages = Math.ceil(total / limit);
+
+    const results = {
+      medals,
+      currentPage: page,
+      totalPages
+    };
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error fetching medals:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+exports.MedalByAthlete = async (req, res) => {
+  try {
+    let { page = 1, limit = 10 } = req.query; // Définir des valeurs par défaut
+    page = parseInt(page, 10);
+    limit = parseInt(limit, 10);
+
+    if (isNaN(page) || page <= 0) {
+        page = 1;
+    }
+
+    if (isNaN(limit) || limit <= 0) {
+        limit = 10;
+    }
+
+    const startIndex = (page - 1) * limit;
+    const [medals] = await db.query(`
+    SELECT athlete_full_name, COUNT(*) AS total_medals FROM olympic_medals GROUP BY athlete_full_name ORDER BY total_medals DESC LIMIT ?, ?`, [startIndex, limit]);
+
+    const [[{ total }]] = await db.query(`
+      SELECT COUNT(*) AS total
+      FROM olympic_medals
+      GROUP BY athlete_full_name
+    `);
+    const totalPages = Math.ceil(total / limit);
+
+    const results = {
+      medals,
+      currentPage: page,
+      totalPages
+    };
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error fetching medals:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
+exports.getMedalsByYear = async (req, res) => {
+  try {
+    let { page = 1, limit = 10 } = req.query; // Définir des valeurs par défaut
+    page = parseInt(page, 10);
+    limit = parseInt(limit, 10);
+
+    if (isNaN(page) || page <= 0) {
+        page = 1;
+    }
+
+    if (isNaN(limit) || limit <= 0) {
+        limit = 10;
+    }
+
+    const startIndex = (page - 1) * limit;
+    const [medals] = await db.query(`
+      SELECT h.game_year, COUNT(*) AS total_medals
+      FROM olympic_medals m
+      JOIN olympic_hosts h ON m.slug_game = h.game_slug
+      GROUP BY h.game_year
+      ORDER BY h.game_year
+      LIMIT ?, ?
+    `, [startIndex, limit]);
+
+    const [[{ total }]] = await db.query(`
+      SELECT COUNT(*) AS total
+      FROM olympic_medals m
+      JOIN olympic_hosts h ON m.slug_game = h.game_slug
+      GROUP BY h.game_year
+    `);
+    const totalPages = Math.ceil(total / limit);
+
+    const results = {
+      medals,
+      currentPage: page,
+      totalPages
+    };
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error fetching medals by year:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+exports.getMedalsByGenderAndType = async (req, res) => {
+  try {
+    let { page = 1, limit = 10 } = req.query; // Définir des valeurs par défaut
+    page = parseInt(page, 10);
+    limit = parseInt(limit, 10);
+
+    if (isNaN(page) || page <= 0) {
+        page = 1;
+    }
+
+    if (isNaN(limit) || limit <= 0) {
+        limit = 10;
+    }
+
+    const startIndex = (page - 1) * limit;
+    const [medals] = await db.query(`
+      SELECT m.event_gender, m.medal_type, COUNT(*) AS total_medals
+      FROM olympic_medals m
+      LEFT JOIN olympic_athletes a ON m.athlete_url = a.athlete_url
+      GROUP BY m.event_gender, m.medal_type
+      ORDER BY m.event_gender, m.medal_type
+      LIMIT ?, ?
+    `, [startIndex, limit]);
+
+    const [[{ total }]] = await db.query(`
+      SELECT COUNT(*) AS total
+      FROM olympic_medals m
+      LEFT JOIN olympic_athletes a ON m.athlete_url = a.athlete_url
+      GROUP BY m.event_gender, m.medal_type
+    `);
+    const totalPages = Math.ceil(total / limit);
+
+    const results = {
+      medals,
+      currentPage: page,
+      totalPages
+    };
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error fetching medals by gender and type:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
