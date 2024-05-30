@@ -6,7 +6,7 @@ import Logo from '../assets/logo.png'
 const navigation = [
   { name: "Accueil", href: "/" },
   { name: "Données", href: "/jeux-olympiques-donnees" },
-  { name: "Analyses", href: "#" },
+  { name: "Analyses", href: "/jeux-olympiques-analyses" },
   { name: "Prédictions", href: "#" },
 ];
 

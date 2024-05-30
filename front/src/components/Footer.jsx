@@ -2,9 +2,9 @@ import Logo from "../assets/logo.png";
 
 const navigation = {
   main: [
-    { name: "Accueil", href: "#" },
-    { name: "Données", href: "#" },
-    { name: "Analyses", href: "#" },
+    { name: "Accueil", href: "/" },
+    { name: "Données", href: "/jeux-olympiques-donnees" },
+    { name: "Analyses", href: "/jeux-olympiques-analyses" },
     { name: "Prédictions", href: "#" },
   ],
   social: [
