@@ -55,7 +55,7 @@ Cloner le dépôt :
 
 bash
 Copier le code
-git clone https://github.com/votreutilisateur/olympic-medals-webapp.git
+git clone (https://github.com/Floriandeharo/hackathon_jo/tree/main)
 cd olympic-medals-webapp/api
 Installer les dépendances :
 
