@@ -1,17 +1,6 @@
-import { useEffect, useState } from "react";
 import Ipssi from "../assets/ipssi.png";
-import api from "../services/api";
 
 export default function LogoClouds() {
-  const [athletes, setAthletes] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => { 
-      const res = await api.get(`athletes`)
-      setAthletes(res);
-    }
-    fetchData()
-  })
-  console.log(athletes);
   return (
     <div className="bg-gray-50 py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
