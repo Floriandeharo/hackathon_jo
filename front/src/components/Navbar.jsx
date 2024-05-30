@@ -4,8 +4,8 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Logo from '../assets/logo.png'
 
 const navigation = [
-  { name: "Accueil", href: "#" },
-  { name: "Données", href: "#" },
+  { name: "Accueil", href: "/" },
+  { name: "Données", href: "/jeux-olympiques-donnees" },
   { name: "Analyses", href: "#" },
   { name: "Prédictions", href: "#" },
 ];

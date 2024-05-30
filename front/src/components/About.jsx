@@ -15,7 +15,7 @@ const tiers = [
     price: { monthly: "$15", annually: "$144" },
     description: "The essentials to provide your best work for clients.",
     features: [
-      "Explorer un vaste ensemble de données couvrant les Jeux Olympiques de [année de début des DATA] à [dernière année des JO].",
+      "Explorer un vaste ensemble de données couvrant les Jeux Olympiques de 1896 à 2022.",
       "Identifier les pays dominants sur la durée, par saison et par sport.",
       "Analyser les facteurs clés pour exceller dans chaque discipline olympique.",
       "Étudier la popularité des sports et la corrélation entre le nombre de médailles olympiques et le PIB des pays participants.",
