@@ -3,8 +3,34 @@ const db = require(path.join(__dirname, '../../db'));
 
 exports.getAllResults = async (req, res) => {
     try {
-        const Results = await db.query('SELECT * FROM olympic_results');
-        res.json(Results);
+        let { page = 1, limit = 10 } = req.query; // Définir des valeurs par défaut
+        page = parseInt(page, 10);
+        limit = parseInt(limit, 10);
+
+        if (isNaN(page) || page <= 0) {
+            page = 1;
+        }
+
+        if (isNaN(limit) || limit <= 0) {
+            limit = 10;
+        }
+
+        const startIndex = (page - 1) * limit;
+
+        // Sélectionner les athlètes avec pagination
+        const [result] = await db.query('SELECT * FROM olympic_results LIMIT ?, ?', [startIndex, limit]);
+
+        // Obtenez le nombre total d'athlètes pour calculer le nombre de pages
+        const [[{ total }]] = await db.query('SELECT COUNT(*) AS total FROM olympic_results');
+        const totalPages = Math.ceil(total / limit);
+
+        const results = {
+            result,
+            currentPage: page,
+            totalPages
+        };
+
+        res.json(results);
     } catch (error) {
         console.error('Error fetching results:', error);
         res.status(500).json({ message: 'Internal Server Error' });
