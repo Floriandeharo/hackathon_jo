@@ -260,50 +260,6 @@ exports.getMedalsByYear = async (req, res) => {
   }
 };
 
-exports.getMedalsByGenderAndType = async (req, res) => {
-  try {
-    let { page = 1, limit = 10 } = req.query; // Définir des valeurs par défaut
-    page = parseInt(page, 10);
-    limit = parseInt(limit, 10);
-
-    if (isNaN(page) || page <= 0) {
-        page = 1;
-    }
-
-    if (isNaN(limit) || limit <= 0) {
-        limit = 10;
-    }
-
-    const startIndex = (page - 1) * limit;
-    const [medals] = await db.query(`
-      SELECT m.event_gender, m.medal_type, COUNT(*) AS total_medals
-      FROM olympic_medals m
-      LEFT JOIN olympic_athletes a ON m.athlete_url = a.athlete_url
-      GROUP BY m.event_gender, m.medal_type
-      ORDER BY m.event_gender, m.medal_type
-      LIMIT ?, ?
-    `, [startIndex, limit]);
-
-    const [[{ total }]] = await db.query(`
-      SELECT COUNT(*) AS total
-      FROM olympic_medals m
-      LEFT JOIN olympic_athletes a ON m.athlete_url = a.athlete_url
-      GROUP BY m.event_gender, m.medal_type
-    `);
-    const totalPages = Math.ceil(total / limit);
-
-    const results = {
-      medals,
-      currentPage: page,
-      totalPages
-    };
-
-    res.json(results);
-  } catch (error) {
-    console.error('Error fetching medals by gender and type:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
-};
 
 // exports.createMedal = async (req, res) => {
 //   try {
