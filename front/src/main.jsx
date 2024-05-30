@@ -5,11 +5,23 @@ import "./index.scss";
 
 import App from "./routes/root";
 import ErrorPage from "./error-page";
+import Data from "./routes/data";
+import Analysis from "./routes/analysis";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/jeux-olympiques-donnees",
+    element: <Data />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/jeux-olympiques-analyses",
+    element: <Analysis />,
     errorElement: <ErrorPage />,
   },
 ]);
