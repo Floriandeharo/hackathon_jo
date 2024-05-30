@@ -12,4 +12,5 @@ router.get('/medals/ByYear', cleanMedalController.getMedalsByYear);
 router.get('/medals/BySeasonAndType', cleanMedalController.getMedalsBySeasonAndType);
 router.get('/medals/ByParticipantAndType', cleanMedalController.getMedalsByParticipantAndType);
 router.get('/medals/ByGender', cleanMedalController.getTypeMedalsByGender);
+
 module.exports = router;

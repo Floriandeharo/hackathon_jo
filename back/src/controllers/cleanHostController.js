@@ -1,6 +1,7 @@
 const path = require('path');
 const db = require(path.join(__dirname, '../../db'));
 
+
 exports.getAllHosts = async (req, res) => {
     try {
         let { page = 1, limit = 10 } = req.query; // Définir des valeurs par défaut
