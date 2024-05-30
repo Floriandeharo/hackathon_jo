@@ -1,5 +1,6 @@
 WebApp de Prédiction et Visualisation des Médailles Olympiques
-Ce projet est une application web conçue pour prédire et visualiser les données des médailles olympiques des 120 dernières années. L'application est construite avec un front-end en React, une API back-end en Node.js, une base de données MySQL et un modèle d'apprentissage automatique dans un notebook Python.
+  Ce projet est une application web conçue pour prédire et visualiser les données des médailles olympiques des 120 dernières années. L'application est construite avec un front-end en React, une API back-end en Node.js, une base de données MySQL et un modèle 
+  d'apprentissage automatique dans un notebook Python.
 
 Table des Matières
 Aperçu
