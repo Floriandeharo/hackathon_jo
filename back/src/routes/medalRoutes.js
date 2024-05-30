@@ -9,5 +9,6 @@ router.get('/medals/TotalCountry',medalController.MedalByCountry);
 router.get('/medals/ByDiscipline', medalController.MedalByDiscipline);
 router.get('/medals/ByAthlete', medalController.MedalByAthlete);
 router.get('/medals/ByYear', medalController.getMedalsByYear);
-
+router.get('/medals/BySeasonAndType', medalController.getMedalsBySeasonAndType);
+router.get('/medals/ByParticipantAndType', medalController.getMedalsByParticipantAndType);
 module.exports = router;

@@ -260,7 +260,49 @@ exports.getMedalsByYear = async (req, res) => {
   }
 };
 
+exports.getMedalsBySeasonAndType = async (req, res) => {
+  try {
 
+
+    const [medals] = await db.query(`
+      SELECT h.game_season, m.medal_type, COUNT(*) AS total_medals
+      FROM olympic_medals m
+      JOIN olympic_hosts h ON m.slug_game = h.game_slug
+      GROUP BY h.game_season, m.medal_type
+      ORDER BY h.game_season, m.medal_type`);
+
+
+
+    const results = {
+      medals
+    };
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error fetching medals by season and type:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+exports.getMedalsByParticipantAndType = async (req, res) => {
+  try {
+    const [medals] = await db.query(`
+      SELECT participant_type, medal_type, COUNT(*) AS total_medals
+      FROM olympic_medals
+      GROUP BY participant_type, medal_type
+      ORDER BY participant_type, medal_type
+    `);
+
+    const results = {
+      medals
+    };
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error fetching medals by participant and type:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 // exports.createMedal = async (req, res) => {
 //   try {
 //     const newMedal = req.body;

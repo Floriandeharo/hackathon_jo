@@ -52,3 +52,28 @@ exports.getAthleteById = async (req, res) => {
       res.status(500).json({ message: 'Internal Server Error' });
     }
 };
+
+exports.getAthleteParticipation = async (req, res) => {
+    try {
+        let { page = 1, limit = 20 } = req.query; // Définir des valeurs par défaut
+        page = parseInt(page, 10);
+        limit = parseInt(limit, 10);
+
+        if (isNaN(page) || page <= 0) {
+            page = 1;
+        }
+
+        if (isNaN(limit) || limit <= 0) {
+            limit = 20;
+        }
+
+        const startIndex = (page - 1) * limit;
+
+        const query = 'SELECT athlete_full_name, games_participations, athlete_medals, COUNT(*) AS total_participants FROM olympic_athletes GROUP BY athlete_full_name, games_participations, athlete_medals ORDER BY athlete_full_name, games_participations LIMIT ?, ?';
+        const [stats] = await db.query(query, [startIndex, limit]);
+        res.json(stats);
+    } catch (error) {
+        console.error('Error fetching athlete stats:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
