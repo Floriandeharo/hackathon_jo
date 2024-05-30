@@ -11,4 +11,5 @@ router.get('/medals/ByAthlete', medalController.MedalByAthlete);
 router.get('/medals/ByYear', medalController.getMedalsByYear);
 router.get('/medals/BySeasonAndType', medalController.getMedalsBySeasonAndType);
 router.get('/medals/ByParticipantAndType', medalController.getMedalsByParticipantAndType);
+router.get('/medals/ByGender', medalController.getTypeMedalsByGender);
 module.exports = router;

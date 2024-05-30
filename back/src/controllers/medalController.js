@@ -303,6 +303,26 @@ exports.getMedalsByParticipantAndType = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+exports.getTypeMedalsByGender = async (req, res) => {
+  try {
+    const [medals] = await db.query(`
+      SELECT m.event_gender, m.medal_type, COUNT(*) AS total_medals
+      FROM olympic_medals m
+      GROUP BY m.event_gender, m.medal_type
+      ORDER BY m.event_gender, m.medal_type
+    `);
+
+    const results = {
+      medals
+    };
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error fetching medals by event gender and type:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
 // exports.createMedal = async (req, res) => {
 //   try {
 //     const newMedal = req.body;
