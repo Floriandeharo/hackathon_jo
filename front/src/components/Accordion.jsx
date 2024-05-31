@@ -131,7 +131,7 @@ export default function Accordion() {
     const loadAllData = async () => {
       const results = await Promise.all(
         Object.keys(apiConfig).map((url) =>
-          fetchData("medals/medals/" + url + "?limit=20").then((data) => ({
+          fetchData("cleanMedals/medals/" + url + "?limit=20").then((data) => ({
             url,
             data,
           }))
